@@ -1,0 +1,33 @@
+The first step in debugging a Pod is taking a look at it. Check the current state of the Pod and recent events with the following command:
+kubectl describe pods ${POD_NAME}
+
+Look at the state of the containers in the pod. Are they all Running? Have there been recent restarts?
+
+Continue debugging depending on the state of the pods.
+
+If a Pod is stuck in Pending it means that it can not be scheduled onto a node. Generally this is because there are insufficient resources of one type or another that prevent scheduling Reasons include:
+- You don’t have enough resources
+- You are using hostPort
+
+
+If a Pod is stuck in the Waiting state, then it has been scheduled to a worker node, but it can’t run on that machine.
+There are three things to check:
+- Make sure that you have the name of the image correct.
+- Have you pushed the image to the repository?
+- Run a manual docker pull <image> on your machine to see if the image can be pulled.
+
+
+If my pod is crashing or otherwise unhealthy
+First, take a look at the logs of the current container:
+
+kubectl logs ${POD_NAME} ${CONTAINER_NAME}
+If your container has previously crashed, you can access the previous container’s crash log with:
+
+kubectl logs --previous ${POD_NAME} ${CONTAINER_NAME}
+Alternately, you can run commands inside that container with exec:
+
+kubectl exec ${POD_NAME} -c ${CONTAINER_NAME} -- ${CMD} ${ARG1} ${ARG2} ... ${ARGN}
+
+
+If your pod is not behaving as you expected, it may be that there was an error in your pod description (task1-a.yaml), and that the error was silently ignored when you created the pod. Often a section of the pod description is nested incorrectly, or a key name is typed incorrectly, and so the key is ignored.
+

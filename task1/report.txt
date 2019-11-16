@@ -1,0 +1,3 @@
+NAME                                                CPU(cores)   MEMORY(bytes)   
+myapp                                               14m          15Mi            
+web-pod-gke-k8-cluster-default-pool-a14072d8-6btj   0m           2Mi             
