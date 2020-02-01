@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  labels:
+    name: myapache-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapache
+  template:
+    metadata:
+      ImagePullSecret:
+      - name: dockerhub-secret 
+      labels:
+        app: myapache
+    spec:
+      containers:
+      - image: tazagulk/myapache2:latest
+        name: myapache
